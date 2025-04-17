@@ -8,21 +8,18 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest # run on this OS not container
-
-    # container:
-    #   image: python:3.9-alpine
+    runs-on: ubuntu-latest  # run on Ubuntu OS
 
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    - name: Install make, build deps, pip tools
+    - name: Install dependencies (apt)
       run: |
-        apk add --no-cache make gcc musl-dev libffi-dev
-        pip install --upgrade pip
+        sudo apt-get update
+        sudo apt-get install -y make gcc libffi-dev python3-dev
 
-    - name: Install dependencies
+    - name: Install pip dependencies
       working-directory: python-ci
       run: make install
 
@@ -32,18 +29,17 @@ jobs:
         . venv/bin/activate
         pytest
 
-    # - name: Install Docker
-    #   run: |
-    #     sudo apt-get update
-    #     sudo apt-get install -y docker.io
+    - name: Install Docker
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y docker.io
 
     - name: Log in to Docker Hub
       run: echo "${{ secrets.DOCKER_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
 
     - name: Build Docker image
       working-directory: python-ci
-      run: docker build -t ${{ secrets.DOCKER_USERNAME }}/python-ci:v1.0.0 .
+      run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/python-ci:v1.0.0 .
 
     - name: Push Docker image to Docker Hub
       run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/python-ci:v1.0.0
-
