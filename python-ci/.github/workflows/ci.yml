@@ -1,0 +1,31 @@
+name: Flask CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Install dependencies (apt)
+      run: sudo apt-get install -y make
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+
+    - name: Run make install
+      run: make install
+
+    - name: Run tests
+      run: |
+        source venv/bin/activate
+        pytest
