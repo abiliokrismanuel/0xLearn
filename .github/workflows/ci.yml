@@ -31,3 +31,14 @@ jobs:
       run: |
         . venv/bin/activate
         pytest
+
+    - name: Log in to Docker Hub
+      run: echo "${{ secrets.DOCKER_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+
+    - name: Build Docker image
+      working-directory: python-ci
+      run: docker build -t ${{ secrets.DOCKER_USERNAME }}/python-ci:v1.0.0 .
+
+    - name: Push Docker image to Docker Hub
+      run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/python-ci:v1.0.0
+

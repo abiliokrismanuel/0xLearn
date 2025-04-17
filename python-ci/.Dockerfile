@@ -1,18 +1,20 @@
-# Gunakan image Python yang sudah ada di Docker Hub
-FROM python:3.13-slim-bullseye
+# Gunakan image Python 3.9 Alpine sebagai base image
+FROM python:3.13-alpine
 
 # Set working directory di dalam container
 WORKDIR /app
 
-# Menyalin file requirement dan kode aplikasi
-COPY requirements.txt /app/
-COPY . /app/
+# Salin requirements.txt ke dalam container
+COPY requirements.txt .
 
 # Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Expose port 5000 (port default Flask)
+# Salin semua file aplikasi ke dalam container
+COPY . .
+
+# Tentukan port yang digunakan aplikasi
 EXPOSE 5000
 
-# Jalankan aplikasi Flask
+# Perintah untuk menjalankan aplikasi Flask
 CMD ["python", "app.py"]
