@@ -42,4 +42,4 @@ jobs:
 
     - name: Build Docker image
       working-directory: python-ci
-      run: docker buildx build -f .Dockerfile ${{ secrets.DOCKER_USERNAME }}/python-ci:v1.0.0 . --push
+      run: docker buildx build -f .Dockerfile -t ${{ secrets.DOCKER_USERNAME }}/python-ci:v1.0.0 . --push
