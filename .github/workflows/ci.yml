@@ -1,0 +1,33 @@
+name: Flask test
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    container:
+      image: python:3.9-alpine
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Install make, build deps, pip tools
+      run: |
+        apk add --no-cache make gcc musl-dev libffi-dev
+        pip install --upgrade pip
+
+    - name: Install dependencies
+      working-directory: python-ci
+      run: make install
+
+    - name: Run tests
+      working-directory: python-ci
+      run: |
+        . venv/bin/activate
+        pytest
