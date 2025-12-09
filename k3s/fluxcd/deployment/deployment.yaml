@@ -1,0 +1,82 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-kamu-deployment
+spec:
+  replicas: 2
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      app: app-kamu
+  template:
+    metadata:
+      labels:
+        app: app-kamu
+    spec:
+      dnsPolicy: ClusterFirst
+      imagePullSecrets:
+        - name: registry-secret
+      tolerations:
+        - key: "node.kubernetes.io/unreachable" #hapus pod jika node notready
+          operator: "Exists"
+          effect: "NoExecute"
+          tolerationSeconds: 30
+      # nodeSelector: 
+      #   node: worker
+      TopologySpreadConstraint:
+        - maxSkew: 1
+          topologyKey: "kubernetes.io/hostname"
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchLabels:
+              app: app-kamu
+      containers:
+        - name: app-kamu
+          image: namamudockerhub/app-kamu:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+          resources:
+            requests:
+              cpu: 50m
+              memory: 50Mi
+            limits:
+              cpu: 100m
+              memory: 100Mi
+          startupProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            periodSeconds: 10
+            failureThreshold: 60
+            timeoutSeconds: 3
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            #initialDelaySeconds: 10
+            periodSeconds: 20
+            failureThreshold: 3
+            timeoutSeconds: 3
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            #initialDelaySeconds: 5
+            periodSeconds: 5
+            failureThreshold: 3
+            successThreshold: 2
+            timeoutSeconds: 3
+          env:
+            - name: TZ
+              value: Asia/Jakarta
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: app-kamu-env-secret
+                  key: DATABASE_URL
+            - name: DATABASE_DIRECT_URL
+              valueFrom:
+                secretKeyRef:
+                  name: app-kamu-env-secret
+                  key: DATABASE_DIRECT_URL

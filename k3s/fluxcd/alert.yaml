@@ -1,0 +1,50 @@
+apiVersion: notification.toolkit.fluxcd.io/v1beta3
+kind: Alert
+metadata:
+  name: flux-system-alerts
+  namespace: flux-system
+  labels:
+    environment: staging
+    team: devops
+    criticality: medium
+spec:
+  providerRef:
+    name: slack-provider
+  eventSeverity: info
+  eventSources:
+    - kind: Kustomization
+      name: "*"
+    - kind: HelmRelease
+      name: "*"
+    - kind: HelmRepository
+      name: "*"
+    - kind: ImageRepository
+      name: "*"
+    - kind: ImageUpdateAutomation
+      name: "*"
+    - kind: OCIRepository
+      name: "*"
+  exclusionList:
+    - ".*no change.*"
+    - ".*ReconciliationSucceeded.*"
+    - ".*apply.*succeeded.*"
+    - ".*upgrade.*succeeded.*"
+    - ".*artifact fetch succeeded.*"
+    - ".*DependencyNotReady.*"
+    - ".*CrashLoopBackOff.*"
+    - ".*Back-off restarting failed container.*"
+    - ".*HealthCheckFailed.*"
+    - ".*Readiness probe failed.*"
+    - ".*Progressing.*"
+    - ".*progress deadline exceeded.*"
+    - ".*waiting for rollout to finish.*"
+    - ".*InstallationFailed.*"
+    - ".*container has unhealthy status.*"
+    - ".*failed to create resource.*"
+    - ".*timed out waiting for the condition.*"
+  eventMetadata:
+    cluster: "clustering"
+    environment: "staging"
+    team: "devops"
+    #tambahin label lain sesuai kebutuhan
+  suspend: false

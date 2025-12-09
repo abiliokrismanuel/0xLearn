@@ -1,0 +1,28 @@
+config:
+  adminUser: pgbouncer
+  adminPassword: adminpwasswordmu
+
+  pgbouncer:
+    auth_type: any
+    pool_mode: transaction
+    max_client_conn: 1000
+    default_pool_size: 50
+    reserve_pool_size: 15
+
+  userlist:
+    usermulah: "pwasswordmu"
+
+  databases:
+    dbmulah:
+      host: endpoindb.cluster-eaa.us-east-1.rds.amazonaws.com
+      port: 8432
+      dbname: dbmulah
+      user: usermu
+      password: passwordmu
+
+# nodeSelector:
+#   node-role.kubernetes.io/control-plane: "true"
+
+service:
+  type: ClusterIP
+  port: 6432

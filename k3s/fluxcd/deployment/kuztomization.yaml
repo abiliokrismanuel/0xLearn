@@ -1,0 +1,7 @@
+namespace: ns-kamu
+
+resources:
+  - deployment.yaml
+  - service.yaml
+  - hpa.yaml
+  - ingress.yaml
