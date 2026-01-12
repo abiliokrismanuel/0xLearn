@@ -1,0 +1,1 @@
+kubectl create secret generic git-credentials   --from-literal=username=namamu   --from-literal=password=PAT-mu   -n flux-system

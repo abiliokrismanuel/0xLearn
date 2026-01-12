@@ -1,9 +1,9 @@
 # path token
 /var/lib/rancher/k3s/server/node-token
 
-exp : K10de6604060764950hehebe633591a8ftestingajaasodhiaugdsqw7147bdf7a315699da00ebeb::server:33cc1080034c6testingajaaoisndhioa252
+exp : K10de6604060764950hehebe633591a8fTESTINGAJALOHasodhiaugdsqw7147bdf7a315699da00ebeb::server:33cc1080034c6TESTINGAJALOHaoisndhioa252
 
-token setelah ::server -> 33cc1080034c6testingajaaoisndhioa252
+token setelah ::server -> 33cc1080034c6testingajaaEAoisndhioa252
 
 # backup etcd k3s stacked 
 

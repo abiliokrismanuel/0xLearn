@@ -1,0 +1,40 @@
+architecture: standalone  #bisa replication
+
+auth:
+  enabled: true
+  password: passwordmu
+
+master:
+  # nodeSelector:
+  #   role: rolenyaapa
+  # node-role.kubernetes.io/control-plane: "true"
+
+  configuration: |-
+    appendonly no
+    save ""
+    maxmemory 650mb
+    maxmemory-policy allkeys-lfu
+    #fragmentasi
+    activedefrag yes
+    active-defrag-threshold-lower 10
+    active-defrag-threshold-upper 100
+    active-defrag-cycle-min 25
+    active-defrag-cycle-max 75
+    active-defrag-ignore-bytes 104857600
+    maxmemory-samples 7
+
+  disableCommands: []
+
+  persistence:
+    enabled: false  # Tidak perlu simpan data ke disk
+
+  resources:
+    requests:
+      cpu: 100m
+      memory: 428Mi
+    limits:
+      cpu: 500m
+      memory: 928Mi
+
+replica:
+  enabled: false

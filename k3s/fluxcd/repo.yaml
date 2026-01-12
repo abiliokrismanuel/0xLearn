@@ -1,0 +1,12 @@
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: fe-pusat
+  namespace: flux-system
+spec:
+  interval: 1m0s
+  url: https://github.com/abilio.git # ganti dengan repo kamu
+  ref:
+    branch: deployment
+  secretRef:
+    name: git-credentials # repo private, ini secret untuk akses git
