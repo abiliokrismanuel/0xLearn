@@ -1,0 +1,7 @@
+fullnameOverride: lio-kibana
+imageTag: "8.11.3" # Pastikan sama dengan versi ES
+
+elasticsearchHosts: "https://lio-elasticsearch:9200"
+elasticsearchCertificateSecret: lio-elasticsearch-certs
+elasticsearchCertificateAuthoritiesFile: ca.crt
+elasticsearchCredentialSecret: lio-elasticsearch-credentials

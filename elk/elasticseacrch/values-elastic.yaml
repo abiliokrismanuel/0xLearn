@@ -1,0 +1,17 @@
+fullnameOverride: lio-elasticsearch
+replicas: 1
+minimumMasterNodes: 1
+
+imageTag: "8.11.3"
+
+#esJavaOpts: "-Xmx1g -Xms1g"
+
+esConfig:
+  elasticsearch.yml: |
+    xpack.security.enabled: true
+
+volumeClaimTemplate:
+  accessModes: ["ReadWriteOnce"]
+  resources:
+    requests:
+      storage: 5Gi
